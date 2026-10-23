@@ -29,11 +29,20 @@ WORKDIR /app
 COPY --from=backend-build /app/publish .
 
 # pg_dump pour la sauvegarde automatique (client PostgreSQL récent : doit être >= version du serveur Supabase)
-RUN apt-get update && apt-get install -y --no-install-recommends curl gnupg ca-certificates lsb-release \
- && curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | gpg --dearmor -o /usr/share/keyrings/pgdg.gpg \
- && echo "deb [signed-by=/usr/share/keyrings/pgdg.gpg] http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list \
- && apt-get update && apt-get install -y --no-install-recommends postgresql-client-17 \
- && rm -rf /var/lib/apt/lists/*
+# Installation du client PostgreSQL pour pg_dump
+RUN apt-get update --fix-missing \
+    && apt-get install -y --no-install-recommends \
+       curl \
+       gnupg \
+       ca-certificates \
+       lsb-release \
+    && curl -fsSL https://www.postgresql.org/media/keys/ACCC4CF8.asc \
+       | gpg --dearmor -o /usr/share/keyrings/pgdg.gpg \
+    && echo "deb [signed-by=/usr/share/keyrings/pgdg.gpg] http://apt.postgresql.org/pub/repos/apt bullseye-pgdg main" \
+       > /etc/apt/sources.list.d/pgdg.list \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends postgresql-client-17 \
+    && rm -rf /var/lib/apt/lists/*
 
 # Définir la variable d'environnement pour le port Render
 ENV ASPNETCORE_URLS=http://+:8080
