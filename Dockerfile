@@ -30,10 +30,7 @@ COPY --from=backend-build /app/publish .
 
 # pg_dump pour la sauvegarde automatique (client PostgreSQL récent : doit être >= version du serveur Supabase)
 # Installation du client PostgreSQL pour pg_dump
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends \
-        ca-certificates \
-    && rm -rf /var/lib/apt/lists/*
+
 
 # Définir la variable d'environnement pour le port Render
 ENV ASPNETCORE_URLS=http://+:8080
