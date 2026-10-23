@@ -1,0 +1,25 @@
+# Visual Studio / IDE
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build / Output folders
+bin/
+obj/
+publish/
+
+# NuGet packages
+**/packages/
+*.nupkg
+
+# Angular / Node
+.angular/
+node_modules/
+dist/
+
+# Secrets locaux
+appsettings.Development.json
+appsettings.Local.json
+*.dump
